@@ -9,7 +9,8 @@
     "build": "node scripts/build.cjs",
     "snapshot": "node scripts/snapshot.cjs",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "prepublishOnly": "node scripts/build.cjs && vitest run"
   },
   "engines": {
     "node": ">=18"

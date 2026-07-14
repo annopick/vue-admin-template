@@ -1,99 +1,70 @@
-# vue-admin-template
+# element-plus-admin-ts
 
-English | [简体中文](./README-zh.md)
+A Vue 3 + TypeScript + Element Plus admin scaffold, published as a pnpm monorepo containing the template app and a `create-element-plus-admin` CLI generator.
 
-> A minimal vue admin template with Element UI & axios & iconfont & permission control & lint
+## Quick start
 
-**Live demo:** http://panjiachen.github.io/vue-admin-template
-
-
-**The current version is `v4.0+` build on `vue-cli`. If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-admin-template/tree/tag/3.11.0), it does not rely on `vue-cli`**
-
-<p align="center">
-  <b>SPONSORED BY</b>
-</p>
-<p align="center">
-   <a href="https://finclip.com?from=vue_element" title="FinClip" target="_blank">
-      <img height="200px" src="https://gitee.com/panjiachen/gitee-cdn/raw/master/vue%E8%B5%9E%E5%8A%A9.png" title="FinClip">
-   </a>
-</p>
-
-## Build Setup
+### Use the scaffold (generate a new project)
 
 ```bash
-# clone the project
-git clone https://github.com/PanJiaChen/vue-admin-template.git
-
-# enter the project directory
-cd vue-admin-template
-
-# install dependency
-npm install
-
-# develop
-npm run dev
+npm create element-plus-admin my-app
+cd my-app
+pnpm install
+pnpm dev
 ```
 
-This will automatically open http://localhost:9528
+The app runs at `http://localhost:9527`. Log in with `admin / 111111`.
 
-## Build
+### Develop this monorepo
 
 ```bash
-# build for test environment
-npm run build:stage
-
-# build for production environment
-npm run build:prod
+git clone <repo-url>
+cd element-plus-admin-ts
+pnpm install
+pnpm dev          # start the template dev server
+pnpm test         # run template tests (unit + e2e)
+pnpm typecheck    # vue-tsc --noEmit across packages
+pnpm build        # build template + CLI snapshot
 ```
 
-## Advanced
+## What's inside
 
-```bash
-# preview the release environment effect
-npm run preview
-
-# preview the release environment effect + static resource analysis
-npm run preview -- --report
-
-# code format check
-npm run lint
-
-# code format check and auto fix
-npm run lint -- --fix
+```
+packages/
+├── template/                      ← Vue 3 + TS + Element Plus admin app
+└── create-element-plus-admin/     ← npm create CLI (embeds template snapshot)
 ```
 
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
+| Dimension | Choice |
+|-----------|--------|
+| Framework | Vue 3.4 (`<script setup>`) |
+| Language | TypeScript (strict, `vue-tsc --noEmit` zero errors) |
+| Build | Vite 5 |
+| UI | Element Plus (Chinese locale) |
+| State | Pinia (setup-store) |
+| Router | vue-router 4 (hash history) |
+| Icons | Element Plus icons only (`@element-plus/icons-vue`, globally registered) |
+| Mock | vite-plugin-mock |
+| Testing | Vitest (unit) + Playwright (e2e) |
+| Node | >=18, pnpm |
 
-## Demo
+## Features
 
-![demo](https://github.com/PanJiaChen/PanJiaChen.github.io/blob/master/images/demo.gif)
+- **Full dynamic permission** — `constantRoutes` (no role) + `asyncRoutes` (`meta.roles` filtered), navigation guard registers the authorized subset at runtime via `router.addRoute`. Admin sees everything, editor sees a filtered subset.
+- **Login flow** — token cookie, router guard redirect, NProgress, re-login on token expiry (50008/50012/50014).
+- **Layout shell** — collapsible Sidebar (mobile-responsive), Navbar with breadcrumb + user dropdown, AppMain.
+- **Example pages** — Table (mock pagination), Tree, Form (validation), multi-level Nested menu.
+- **Composables** — `useResizeHandler`, `useFixiOSBug` (replaced Vue 2 mixins).
 
-## Extra
+## Architecture decisions
 
-If you want router permission && generate menu by user roles , you can use this branch [permission-control](https://github.com/PanJiaChen/vue-admin-template/tree/permission-control)
+See `docs/adr/`:
+- [ADR-0001](docs/adr/0001-monorepo-and-cli-source.md) — Monorepo with embedded-snapshot CLI
+- [ADR-0002](docs/adr/0002-full-dynamic-permission-in-a-minimal-template.md) — Full dynamic permission in a minimal template
+- [ADR-0003](docs/adr/0003-ep-icons-only-drop-svg.md) — Element Plus icons only, drop the SVG pipeline
 
-For `typescript` version, you can use [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
-
-## Related Project
-
-- [vue-element-admin](https://github.com/PanJiaChen/vue-element-admin)
-
-- [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-
-- [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template)
-
-- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
-
-## Browsers support
-
-Modern browsers and Internet Explorer 10+.
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
+Domain vocabulary: see `CONTEXT.md`.
 
 ## License
 
-[MIT](https://github.com/PanJiaChen/vue-admin-template/blob/master/LICENSE) license.
-
-Copyright (c) 2017-present PanJiaChen
+MIT
