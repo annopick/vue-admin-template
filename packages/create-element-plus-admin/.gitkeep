@@ -1,0 +1,2 @@
+# This directory will hold the embedded template snapshot (populated by slice 6's
+# prepublishOnly script). Kept empty with .gitkeep so the workspace resolves.
