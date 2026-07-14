@@ -25,6 +25,13 @@ export const constantRoutes: RouteRecordRaw[] = [
       },
     ],
   },
+  // 404 catch-all — must be last. Slice 6 will move this to register after
+  // the dynamic asyncRoutes so they match before falling through to 404.
+  {
+    path: '/:pathMatch(.*)*',
+    component: () => import('@/views/404.vue'),
+    meta: { hidden: true },
+  },
 ]
 
 const router = createRouter({

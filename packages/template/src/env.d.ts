@@ -6,6 +6,11 @@ declare module '*.vue' {
   export default component
 }
 
+declare module '*.scss' {
+  const classes: Record<string, string>
+  export default classes
+}
+
 declare module 'element-plus/dist/locale/zh-cn.mjs' {
   import type { Language } from 'element-plus/es/locale'
   const locale: Language

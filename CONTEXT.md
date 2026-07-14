@@ -36,6 +36,6 @@ _Avoid_: hook, mixin
 An icon from `@element-plus/icons-vue`, rendered via `<component :is="iconName">` after global registration. The project uses EP icons exclusively; custom SVG icons and `svg-sprite-loader` are removed.
 _Avoid_: svg-icon, iconfont
 
-**Sass :export**:
-The `:export { key: $var }` block at the end of `variables.scss` that exposes SCSS values to TypeScript via Vite's CSS modules interop. Replaces direct `import variables from '@/styles/variables.scss'` patterns and carries the sidebar color tokens into JS.
-_Avoid_: CSS variables, theme tokens (when referring to the SCSS mechanism specifically)
+**Sidebar variables**:
+The color/layout tokens (`menuBg`, `menuText`, `sideBarWidth`, etc.) consumed by both SCSS (`styles/variables.scss`) and JS (`styles/variables.ts`). Originally intended to use Sass `:export` but Dart Sass + Vite's module loading proved unreliable, so the TS file mirrors the SCSS values and serves as the JS source of truth.
+_Avoid_: CSS variables, theme tokens, :export (the Sass mechanism is no longer used)
