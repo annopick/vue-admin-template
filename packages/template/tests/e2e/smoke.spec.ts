@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test'
 
-// Tracer bullet: the highest-seam assertion that proves the scaffold boots.
-// If this passes, the entire Vite + Vue 3 + dev-server toolchain is wired.
-test('dev server serves the app shell at /', async ({ page }) => {
+// Tracer bullet retained from slice 2: proves the dev server boots and serves.
+// With the router guard in place (slice 3), the root now redirects to /login.
+test('dev server boots and serves the login page', async ({ page }) => {
   await page.goto('/')
-  // The minimal App renders this text; later slices replace it with the login page.
-  await expect(page.locator('body')).toContainText('Vue Admin Template')
+  await expect(page).toHaveURL(/\/login/)
+  await expect(page.locator('.login-container')).toBeVisible()
 })

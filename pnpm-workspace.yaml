@@ -3,3 +3,5 @@ packages:
 
 allowBuilds:
   esbuild: true
+  vue-demi: true
+  "@parcel/watcher": true
