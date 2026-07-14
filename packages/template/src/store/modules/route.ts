@@ -5,14 +5,15 @@ import type { RouteRecordRaw } from 'vue-router'
 
 /**
  * Holds the routes the Sidebar renders. Initialized with constantRoutes;
- * slice 6 (dynamic permission) will append the filtered asyncRoutes here.
+ * after the permission guard runs, the filtered asyncRoutes are appended
+ * via addRoutes().
  */
 export const useRouteStore = defineStore('route', () => {
   const routes = ref<RouteRecordRaw[]>([...constantRoutes])
 
-  function setRoutes(newRoutes: RouteRecordRaw[]) {
-    routes.value = newRoutes
+  function addRoutes(newRoutes: RouteRecordRaw[]) {
+    routes.value = [...constantRoutes, ...newRoutes]
   }
 
-  return { routes, setRoutes }
+  return { routes, addRoutes }
 })
