@@ -17,7 +17,8 @@ test.describe('layout shell', () => {
   test('dashboard renders inside the Layout with Sidebar + Navbar', async ({ page }) => {
     // Sidebar is present with the dashboard menu item
     await expect(page.locator('.sidebar-container')).toBeVisible()
-    await expect(page.locator('.el-menu-item, .submenu-title-noDropdown')).toContainText('Dashboard')
+    // Dashboard is the first (and only non-collapsed) top-level menu item
+    await expect(page.locator('.el-menu-item').filter({ hasText: 'Dashboard' })).toBeVisible()
 
     // Navbar with breadcrumb
     await expect(page.locator('.navbar')).toBeVisible()
