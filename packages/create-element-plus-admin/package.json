@@ -2,15 +2,17 @@
   "name": "create-element-plus-admin",
   "version": "0.1.0",
   "description": "Scaffold a new Vue 3 + TypeScript + Element Plus admin project from the embedded template snapshot.",
-  "type": "module",
-  "private": true,
-  "main": "dist/index.js",
   "bin": {
     "create-element-plus-admin": "bin/index.js"
   },
   "scripts": {
-    "build": "echo 'CLI implementation arrives in slice 6' && exit 0",
-    "typecheck": "echo 'no TS sources yet' && exit 0"
+    "build": "node scripts/build.cjs",
+    "snapshot": "node scripts/snapshot.cjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "license": "MIT"
 }
