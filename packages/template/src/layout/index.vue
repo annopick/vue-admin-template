@@ -1,16 +1,88 @@
 <script setup lang="ts">
-// Layout shell placeholder. Full Sidebar/Navbar/AppMain arrive in slice 4.
-// For now it just renders the child route so the login → dashboard flow works.
+import { computed } from 'vue'
+import Sidebar from './components/Sidebar/index.vue'
+import Navbar from './components/Navbar.vue'
+import AppMain from './components/AppMain.vue'
+import { useAppStore } from '@/store/modules/app'
+import { useSettingsStore } from '@/store/modules/settings'
+import { useResizeHandler } from '@/composables/useResizeHandler'
+
+const appStore = useAppStore()
+const settingsStore = useSettingsStore()
+
+useResizeHandler()
+
+const sidebar = computed(() => appStore.sidebar)
+const device = computed(() => appStore.device)
+const fixedHeader = computed(() => settingsStore.fixedHeader)
+
+const classObj = computed(() => ({
+  hideSidebar: !sidebar.value.opened,
+  openSidebar: sidebar.value.opened,
+  withoutAnimation: sidebar.value.withoutAnimation,
+  mobile: device.value === 'mobile',
+}))
+
+function handleClickOutside() {
+  appStore.closeSideBar({ withoutAnimation: false })
+}
 </script>
 
 <template>
-  <div class="app-wrapper">
-    <router-view />
+  <div :class="classObj" class="app-wrapper">
+    <div
+      v-if="classObj.mobile && sidebar.opened"
+      class="drawer-bg"
+      @click="handleClickOutside"
+    />
+    <sidebar class="sidebar-container" />
+    <div class="main-container">
+      <div :class="{ 'fixed-header': fixedHeader }">
+        <navbar />
+      </div>
+      <app-main />
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@use '@/styles/variables.scss' as *;
+
 .app-wrapper {
-  min-height: 100vh;
+  position: relative;
+  height: 100%;
+  width: 100%;
+
+  &.mobile.openSidebar {
+    position: fixed;
+    top: 0;
+  }
+}
+
+.drawer-bg {
+  background: #000;
+  opacity: 0.3;
+  width: 100%;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
+}
+
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: calc(100% - #{$sideBarWidth});
+  transition: width 0.28s;
+}
+
+.hideSidebar .fixed-header {
+  width: calc(100% - 54px);
+}
+
+.mobile .fixed-header {
+  width: 100%;
 }
 </style>
