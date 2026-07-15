@@ -1,10 +1,10 @@
 # element-plus-admin-ts
 
-A Vue 3 + TypeScript + Element Plus admin scaffold, published as a pnpm monorepo containing the template app and a `create-element-plus-admin` CLI generator.
+一个 Vue 3 + TypeScript + Element Plus 的后台管理脚手架，以 pnpm monorepo 形式发布，包含模板应用和 `create-element-plus-admin` 脚手架 CLI。
 
-## Quick start
+## 快速开始
 
-### Use the scaffold (generate a new project)
+### 使用脚手架生成新项目
 
 ```bash
 npm create element-plus-admin my-app
@@ -13,57 +13,57 @@ pnpm install
 pnpm dev
 ```
 
-The app runs at `http://localhost:9527`. Log in with `admin / 111111`.
+应用运行在 `http://localhost:9527`。使用 `admin / 111111` 登录。
 
-### Develop this monorepo
+### 开发本 monorepo
 
 ```bash
-git clone <repo-url>
+git clone <仓库地址>
 cd element-plus-admin-ts
 pnpm install
-pnpm dev          # start the template dev server
-pnpm test         # run template tests (unit + e2e)
-pnpm typecheck    # vue-tsc --noEmit across packages
-pnpm build        # build template + CLI snapshot
+pnpm dev          # 启动模板开发服务器
+pnpm test         # 运行测试（unit + e2e）
+pnpm typecheck    # 跨包类型检查 vue-tsc --noEmit
+pnpm build        # 构建模板 + CLI 快照
 ```
 
-## What's inside
+## 仓库结构
 
 ```
 packages/
-├── template/                      ← Vue 3 + TS + Element Plus admin app
-└── create-element-plus-admin/     ← npm create CLI (embeds template snapshot)
+├── template/                      ← Vue 3 + TS + Element Plus 后台应用
+└── create-element-plus-admin/     ← 脚手架 CLI（内嵌模板快照）
 ```
 
-| Dimension | Choice |
-|-----------|--------|
-| Framework | Vue 3.4 (`<script setup>`) |
-| Language | TypeScript (strict, `vue-tsc --noEmit` zero errors) |
-| Build | Vite 5 |
-| UI | Element Plus (Chinese locale) |
-| State | Pinia (setup-store) |
-| Router | vue-router 4 (hash history) |
-| Icons | Element Plus icons only (`@element-plus/icons-vue`, globally registered) |
+| 维度 | 技术选型 |
+|------|---------|
+| 框架 | Vue 3.4（`<script setup>`） |
+| 语言 | TypeScript（strict 模式，`vue-tsc --noEmit` 零错误） |
+| 构建 | Vite 5 |
+| UI 库 | Element Plus（中文语言包） |
+| 状态管理 | Pinia（setup-store 风格） |
+| 路由 | vue-router 4（hash 模式） |
+| 图标 | 仅 Element Plus 图标（`@element-plus/icons-vue`，全局注册） |
 | Mock | vite-plugin-mock |
-| Testing | Vitest (unit) + Playwright (e2e) |
-| Node | >=18, pnpm |
+| 测试 | Vitest（单元）+ Playwright（端到端） |
+| Node | >=18，pnpm |
 
-## Features
+## 功能特性
 
-- **Full dynamic permission** — `constantRoutes` (no role) + `asyncRoutes` (`meta.roles` filtered), navigation guard registers the authorized subset at runtime via `router.addRoute`. Admin sees everything, editor sees a filtered subset.
-- **Login flow** — token cookie, router guard redirect, NProgress, re-login on token expiry (50008/50012/50014).
-- **Layout shell** — collapsible Sidebar (mobile-responsive), Navbar with breadcrumb + user dropdown, AppMain.
-- **Example pages** — Table (mock pagination), Tree, Form (validation), multi-level Nested menu.
-- **Composables** — `useResizeHandler`, `useFixiOSBug` (replaced Vue 2 mixins).
+- **完整动态权限** — `constantRoutes`（无角色要求）+ `asyncRoutes`（`meta.roles` 过滤），导航守卫在运行时通过 `router.addRoute` 注册授权子集。admin 可见全部菜单，editor 仅可见过滤后的子集。
+- **登录流程** — token cookie 持久化、路由守卫重定向、NProgress 进度条、token 过期时弹出重新登录确认（50008/50012/50014）。
+- **布局外壳** — 可折叠侧边栏（移动端自适应）、导航栏（面包屑 + 用户头像下拉菜单 + TagsView 标签页）、主内容区。
+- **示例页面** — 表格（mock 分页）、树形控件、表单（校验）、多级嵌套菜单。
+- **组合式函数** — `useResizeHandler`、`useFixiOSBug`（替代 Vue 2 mixin）。
 
-## Architecture decisions
+## 架构决策
 
-See `docs/adr/`:
-- [ADR-0001](docs/adr/0001-monorepo-and-cli-source.md) — Monorepo with embedded-snapshot CLI
-- [ADR-0002](docs/adr/0002-full-dynamic-permission-in-a-minimal-template.md) — Full dynamic permission in a minimal template
-- [ADR-0003](docs/adr/0003-ep-icons-only-drop-svg.md) — Element Plus icons only, drop the SVG pipeline
+详见 `docs/adr/`：
+- [ADR-0001](docs/adr/0001-monorepo-and-cli-source.md) — Monorepo + 内嵌快照 CLI
+- [ADR-0002](docs/adr/0002-full-dynamic-permission-in-a-minimal-template.md) — 极简模板保留完整动态权限
+- [ADR-0003](docs/adr/0003-ep-icons-only-drop-svg.md) — 仅使用 Element Plus 图标，移除 SVG 流水线
 
-Domain vocabulary: see `CONTEXT.md`.
+领域词汇表：见 `CONTEXT.md`。
 
 ## License
 
