@@ -85,11 +85,20 @@ async function logout() {
 
   .right-menu {
     height: 100%;
-    line-height: 50px;
+    display: flex;
+    align-items: center;
     padding-right: 16px;
 
     &:focus {
       outline: none;
+    }
+
+    // el-dropdown wraps the trigger; make it fill the row so the avatar
+    // centers vertically instead of sticking to the top.
+    :deep(.el-dropdown) {
+      display: flex;
+      align-items: center;
+      height: 100%;
     }
 
     .avatar-wrapper {
