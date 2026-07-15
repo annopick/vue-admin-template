@@ -1,0 +1,67 @@
+name: Publish CLI
+
+# 发布 create-element-plus-admin 包到 npm。
+#
+# 触发条件：推送 create-element-plus-admin@<版本号> 格式的 tag。
+# 认证方式：npm OIDC Trusted Publishing（无需 NPM_TOKEN）。
+#   npm CLI 自动检测 GitHub Actions OIDC 环境并交换短期令牌。
+#   首次发布必须手动完成（OIDC 不支持首次发布）。
+#
+# 使用方式：
+#   1. 更新 packages/create-element-plus-admin/package.json 的 version
+#   2. git tag create-element-plus-admin@0.2.0
+#   3. git push origin create-element-plus-admin@0.2.0
+#
+# npm 后台 OIDC Trusted Publishing 配置（已由用户完成）：
+#   owner: annopick, repo: vue-admin-template, workflow: publish-cli.yml
+
+on:
+  push:
+    tags:
+      # 匹配 create-element-plus-admin@0.1.0、create-element-plus-admin@1.2.3 等
+      - 'create-element-plus-admin@*'
+
+permissions:
+  contents: read
+  id-token: write  # npm OIDC trusted publishing 需要
+
+jobs:
+  publish:
+    name: Publish to npm
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.14.0  # npm OIDC trusted publishing 要求 Node 22.14+
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate template snapshot
+        run: node packages/create-element-plus-admin/scripts/build.cjs
+
+      - name: Verify tag version matches package.json
+        run: |
+          TAG_VERSION="${GITHUB_REF_NAME#create-element-plus-admin@}"
+          PKG_VERSION=$(node -p "require('./packages/create-element-plus-admin/package.json').version")
+          echo "Tag version: $TAG_VERSION"
+          echo "package.json version: $PKG_VERSION"
+          if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
+            echo "::error::Tag 版本 ($TAG_VERSION) 与 package.json 版本 ($PKG_VERSION) 不一致"
+            exit 1
+          fi
+
+      - name: Publish to npm (OIDC Trusted Publishing)
+        run: pnpm --filter create-element-plus-admin publish --access public --no-git-checks
