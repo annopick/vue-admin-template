@@ -19,6 +19,15 @@ export default defineConfig(({ mode }) => {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // Use the modern Dart Sass API instead of the deprecated legacy JS API.
+          // Silences the "[legacy-js-api]" deprecation warnings from Sass 2.0.
+          api: 'modern-compiler',
+        },
+      },
+    },
     server: {
       port: Number(env.VITE_PORT) || 9527,
       open: true,
