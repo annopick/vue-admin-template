@@ -36,8 +36,8 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 11
+        # version 从根 package.json 的 packageManager 字段读取（pnpm@11.3.0），
+        # 不在此重复指定，否则会报 ERR_PNPM_BAD_PM_VERSION。
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
