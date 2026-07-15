@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import Sidebar from './components/Sidebar/index.vue'
 import Navbar from './components/Navbar.vue'
+import TagsView from './components/TagsView/index.vue'
 import AppMain from './components/AppMain.vue'
 import { useAppStore } from '@/store/modules/app'
 import { useSettingsStore } from '@/store/modules/settings'
@@ -39,6 +40,7 @@ function handleClickOutside() {
     <div class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <navbar />
+        <tags-view />
       </div>
       <app-main />
     </div>
