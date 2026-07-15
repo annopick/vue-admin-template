@@ -1,7 +1,7 @@
 {
   "name": "create-element-plus-admin",
   "version": "0.1.0",
-  "description": "Scaffold a new Vue 3 + TypeScript + Element Plus admin project from the embedded template snapshot.",
+  "description": "从内嵌模板快照生成一个全新的 Vue 3 + TypeScript + Element Plus 后台项目。",
   "bin": {
     "create-element-plus-admin": "bin/index.js"
   },
@@ -10,10 +10,36 @@
     "snapshot": "node scripts/snapshot.cjs",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "prepublishOnly": "node scripts/build.cjs && vitest run"
+    "prepublishOnly": "node scripts/build.cjs"
   },
   "engines": {
     "node": ">=18"
   },
-  "license": "MIT"
+  "keywords": [
+    "vue",
+    "vue3",
+    "typescript",
+    "element-plus",
+    "admin",
+    "scaffold",
+    "cli",
+    "template"
+  ],
+  "author": "annopick",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/annopick/vue-admin-template.git",
+    "directory": "packages/create-element-plus-admin"
+  },
+  "homepage": "https://github.com/annopick/vue-admin-template#readme",
+  "bugs": {
+    "url": "https://github.com/annopick/vue-admin-template/issues"
+  },
+  "files": [
+    "bin/",
+    "scripts/",
+    "template/",
+    "README.md"
+  ]
 }
