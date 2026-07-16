@@ -11,7 +11,12 @@ import tableMock from '../mock/table'
 interface MockRoute {
   url: string
   method?: string
-  response?: (opt: { url: Record<string, unknown>; body: Record<string, unknown>; query: Record<string, unknown>; headers: Record<string, unknown> }) => unknown
+  response?: (opt: {
+    url: string
+    body: Record<string, unknown>
+    query: Record<string, unknown>
+    headers: Record<string, unknown>
+  }) => unknown
   timeout?: number
 }
 
@@ -39,6 +44,8 @@ export async function setupProdMockServer() {
   for (const item of mockList) {
     const reg = pathToRegexp(item.url, undefined as never, { end: false } as never)
     const method = item.method || 'get'
+    // mockjs 的 handler 收到 { url, body, type }，其中 url 是完整请求路径，
+    // body 是 JSON 字符串。我们解析后传给 mock 定义里的 response 函数。
     const handler = (options: { url: string; body: string; type: string }) => {
       const { url, body } = options
       const query = param2Obj(url)
@@ -48,11 +55,12 @@ export async function setupProdMockServer() {
       } catch {
         parsedBody = {}
       }
-      const result =
-        typeof item.response === 'function'
-          ? item.response({ url: { url }, body: parsedBody, query, headers: {} })
-          : item.response
-      return Mock.mock(result as never)
+      // response 函数返回数据，mockjs 会自动用 Mock.mock 展开模板字符串。
+      // 直接返回原始对象（mockjs 会在外层调 Mock.mock）。
+      if (typeof item.response === 'function') {
+        return item.response({ url, body: parsedBody, query, headers: {} })
+      }
+      return item.response
     }
     Mock.mock(reg as unknown as string, method, handler as never)
   }
