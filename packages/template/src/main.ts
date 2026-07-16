@@ -10,6 +10,15 @@ import router from './router'
 import '@/styles/index.scss'
 import '@/permission'
 
+// 生产环境 mock：仅在 GitHub Pages 演示构建时启用（VITE_USE_MOCK=true）。
+// 用动态 import 让 mock 代码只在需要时打包；setupProdMockServer 是 async
+// 但不需要 await（mockjs 拦截在 import 完成后就生效）。
+if (import.meta.env.VITE_USE_MOCK === 'true') {
+  import('./mockProdServer').then(({ setupProdMockServer }) => {
+    setupProdMockServer()
+  })
+}
+
 const app = createApp(App)
 
 const pinia = createPinia()

@@ -13,7 +13,11 @@ declare module '*.scss' {
 
 declare module 'mockjs' {
   const Mock: {
-    mock: <T>(template: T | string) => T
+    mock: {
+      <T>(template: T | string): T
+      (regexp: string | RegExp, method: string, handler: (options: { url: string; body: string; type: string }) => unknown): unknown
+    }
+    setup: (options: { timeout?: string | number }) => void
     Random: {
       datetime: (format?: string) => string
       first: () => string
@@ -32,8 +36,15 @@ declare module 'element-plus/dist/locale/zh-cn.mjs' {
   export default locale
 }
 
+declare module 'vite-plugin-mock/dist/client' {
+  export function createProdMockServer(mockList: unknown[]): Promise<void>
+}
+
 interface ImportMetaEnv {
   readonly VITE_APP_BASE_API: string
+  readonly VITE_USE_MOCK?: string
+  readonly VITE_BASE_PATH?: string
+  readonly VITE_PORT?: string
 }
 
 interface ImportMeta {
