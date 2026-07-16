@@ -6,6 +6,9 @@ import { fileURLToPath, URL } from 'node:url'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
   return {
+    // GitHub Pages 部署在 /vue-admin-template/ 子路径下，需要设置 base。
+    // 其他环境默认 '/'。
+    base: env.VITE_BASE_PATH || '/',
     plugins: [
       vue(),
       viteMockServe({

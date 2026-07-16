@@ -40,9 +40,10 @@ export default [
   {
     url: '/user/info/:token',
     method: 'get',
-    response: ({ query }: { query: Record<string, string> }) => {
-      // vite-plugin-mock passes path params via query for :token style
-      const token = query.token
+    response: ({ query, url }: { query: Record<string, string>; url: string }) => {
+      // dev 中间件会把 :token 路径参数塞进 query.token；
+      // prod 的 createProdMockServer 不做这个转换，从 URL 路径末段提取。
+      const token = query.token || (url ? url.split('/').filter(Boolean).pop() : '') || ''
       const username = TOKEN_TO_USER[token]
       const user = username ? USERS[username] : undefined
       if (user) {

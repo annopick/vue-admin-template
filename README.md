@@ -2,6 +2,8 @@
 
 一个 Vue 3 + TypeScript + Element Plus 的后台管理脚手架，以 pnpm monorepo 形式发布，包含模板应用和 `create-element-plus-admin` 脚手架 CLI。
 
+> 🎉 **[在线演示](https://annopick.github.io/vue-admin-template/)** — 登录 `admin / 111111`（生产环境内嵌 mock，无需后端）
+
 ## 快速开始
 
 ### 使用脚手架生成新项目

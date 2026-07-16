@@ -1,0 +1,77 @@
+name: Deploy Pages
+
+# 将 packages/template 构建并部署到 GitHub Pages 作为在线演示站点。
+# 演示地址：https://annopick.github.io/vue-admin-template/
+# 登录：admin / 111111（生产环境内嵌 mock，无需后端）。
+#
+# 触发条件：push 到 master 且 packages/template/ 或 workflow 文件有改动。
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'packages/template/**'
+      - '.github/workflows/deploy-pages.yml'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+
+  # 允许手动触发
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只允许一个部署
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build demo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build template (GitHub Pages mode)
+        run: pnpm --filter template exec vite build --mode github
+        env:
+          VITE_BASE_PATH: /vue-admin-template/
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: packages/template/dist
+
+  deploy:
+    name: Deploy to Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
